@@ -1,0 +1,44 @@
+version: "3.1"
+
+volumes:
+    db-events-data:
+
+services:
+
+    db:
+      image: mysql:5.7
+      container_name: events-mysql
+      working_dir: /application
+      volumes:
+        - db-events-data:/application
+      environment:
+        - MYSQL_ROOT_PASSWORD=apoioteste
+        - MYSQL_DATABASE=events
+        - MYSQL_USER=user
+        - MYSQL_PASSWORD=apoioteste
+      ports:
+        - "13306:3306"
+
+    webserver:
+      image: nginx:alpine
+      container_name: events-webserver
+      working_dir: /application
+      volumes:
+        - .:/application
+        - ./.docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      ports:
+        - "8000:80"
+
+    php-fpm:
+      build: 
+        context: ./.docker/php-fpm
+        dockerfile: Dockerfile
+      container_name: events-php-fpm
+      working_dir: /application
+      volumes:
+        - .:/application
+        - ./.docker/php-fpm/php-ini-overrides.ini:/etc/php/7.2/fpm/conf.d/99-overrides.ini
+      environment:
+        XDEBUG_CONFIG: "remote_host=192.168.3.49"
+      links:
+        - db
