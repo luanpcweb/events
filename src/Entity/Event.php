@@ -12,8 +12,8 @@ class Event
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(name="id", type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -42,22 +42,12 @@ class Event
      */
     private $date_created;
 
-    public function __construct(
-        string $title, 
-        \DateTime $date_start, 
-        \DateTime $date_end, 
-        string $description, 
-        \DateTime $date_created
-    )
+    public function setId($id): void
     {
-        $this->title = $title; 
-        $this->date_start = $date_start; 
-        $this->date_end = $date_end; 
-        $this->description = $description; 
-        $this->date_created = $date_created; 
+        $this->id = $id;
     }
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
@@ -66,10 +56,20 @@ class Event
     {
         return $this->title;
     }
+    
+    public function setTitle($title): void
+    {
+        $this->title = $title;
+    }
 
     public function getDateStart(): ?\DateTime
     {
         return $this->date_start;
+    }
+
+    public function setDateStart($date_start): void
+    {
+        $this->date_start = $date_start;
     }
 
     public function getDateEnd(): ?\DateTime
@@ -77,9 +77,19 @@ class Event
         return $this->date_end;
     }
 
+    public function setDateEnd($date_end): void
+    {
+        $this->date_end = $date_end;
+    }
+
     public function getDescription(): ?string
     {
         return $this->description;
+    }
+
+    public function setDescription($description): void
+    {
+        $this->description = $description;
     }
 
     public function getDateCreated(): \DateTime
@@ -87,9 +97,15 @@ class Event
         return $this->date_created;
     }
 
+    public function setDateCreated($date_created): void
+    {
+        $this->date_created = $date_created;
+    }
+
     public function jsonSerialize()
     {
         return [
+            "id" => $this->getId(),
             "title" => $this->getTitle(),
             "date_start" => $this->getDateStart(),
             "date_end" => $this->getDateEnd(),

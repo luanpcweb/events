@@ -6,6 +6,7 @@ use App\Entity\Event;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Exceptions\EventNotFound;
 
 /**
  * @method Event|null find($id, $lockMode = null, $lockVersion = null)
@@ -32,37 +33,22 @@ class EventRepository extends ServiceEntityRepository
         $this->manager->flush();
     }
 
-    public function destroy()
+    public function update(Event $data)
     {
 
+        $this->manager->persist($data);
+        $this->manager->flush();
     }
 
-    // /**
-    //  * @return Event[] Returns an array of Event objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function destroy($id)
     {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('e.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $event = $this->find($id);
+        if(!$event) {
+            throw new EventNotFound('Event not found');
+        }
 
-    /*
-    public function findOneBySomeField($value): ?Event
-    {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $this->manager->remove($event);
+        $this->manager->flush();
     }
-    */
+    
 }
