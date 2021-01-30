@@ -60,8 +60,8 @@ class EventController extends AbstractController
     public function listOneBy($id): Response
     {
         try {
-            $events = $this->eventService->listOneBy($id);
-            return $this->json($events);
+            $event = $this->eventService->listOneBy($id);
+            return $this->json($event);
         } catch (EventNotFound $e) {
             return $this->json(['msg' => 'Event not found'], 400);
         }
@@ -85,7 +85,7 @@ class EventController extends AbstractController
                 $request->get('description')
             );
             
-            return $this->json($events);
+            return $this->json(['msg' => 'Event edited']);
 
         } catch (EventNotFound $e) {
             return $this->json(['msg' => 'Event not found'], 400);
