@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Api;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -8,10 +8,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\EventService;
 use App\Exceptions\EventNotFound;
+use App\Exceptions\ErrorOnCreatingEvent;
 
 /**
   * Class EventController
-  * @package App\Controller
+  * @package App\Controller\Api
   * @Route("/api", name="event_api")
   */
 class EventController extends AbstractController
@@ -37,16 +38,20 @@ class EventController extends AbstractController
      */
     public function create(Request $request): Response
     {
-        $request = $this->transformJsonBody($request);
+        try {
+            $request = $this->transformJsonBody($request);
 
-        $event = $this->eventService->create(
-            $request->get('title'), 
-            new \DateTime($request->get('date_start')), 
-            new \DateTime($request->get('date_end')), 
-            $request->get('description')
-        );
+            $event = $this->eventService->create(
+                $request->get('title'), 
+                new \DateTime($request->get('date_start')), 
+                new \DateTime($request->get('date_end')), 
+                $request->get('description')
+            );
 
-        return $this->json(['msg' => 'Event created successfully', 'id' => $event->getId()], 201);
+            return $this->json(['msg' => 'Event created successfully', 'id' => $event->getId()], 201);
+        } catch(ErrorOnCreatingEvent $e) {
+            return $this->json(['msg' => $e->getMessage()], 400);
+        }   
     }
 
     /**

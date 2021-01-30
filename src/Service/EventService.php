@@ -5,6 +5,7 @@ use Ramsey\Uuid\Uuid;
 use App\Repository\EventRepository;
 use App\Entity\Event;
 use App\Exceptions\EventNotFound;
+use App\Exceptions\ErrorOnCreatingEvent;
 
 class EventService
 {
@@ -37,26 +38,40 @@ class EventService
 
     public function create(
         string $title, 
-        \DateTime $date_start, 
-        \DateTime $date_end, 
+        \DateTime $dateStart, 
+        \DateTime $dateEnd, 
         string $description
     )
     {
-        $now = new \DateTime('now', new \DateTimeZone('UTC'));
-        $uuid = Uuid::uuid5(Uuid::NAMESPACE_URL, $title . $description . $now->format('Ymdims'));
 
-        $event = new Event();
+        if (empty($title)) {
+            throw new ErrorOnCreatingEvent('Empty Title');
+        }
+        
+        if (empty($description)) {
+            throw new ErrorOnCreatingEvent('Empty Description');
+        }
 
-        $event->setId($uuid);
-        $event->setTitle($title); 
-        $event->setDateStart($date_start); 
-        $event->setDateEnd($date_end);
-        $event->setDescription($description);
-        $event->setDateCreated($now);
+        try {
 
-        $this->eventRepository->save($event);
+            $now = new \DateTime('now', new \DateTimeZone('UTC'));
+            $uuid = Uuid::uuid5(Uuid::NAMESPACE_URL, $title . $description . $now->format('Ymdims'));
 
-        return $event;
+            $event = new Event();
+            $event->setId($uuid);
+            $event->setTitle($title); 
+            $event->setDateStart($dateStart); 
+            $event->setDateEnd($dateEnd);
+            $event->setDescription($description);
+            $event->setDateCreated($now);
+
+            $this->eventRepository->save($event);
+
+            return $event;
+
+        } catch(\Exception $e) {
+            throw new ErrorOnCreatingEvent('Error in creating Event');
+        }
 
     }
 
