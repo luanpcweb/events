@@ -16,6 +16,9 @@ use App\Exceptions\UserNotFound;
  */
 class UserRepository extends ServiceEntityRepository
 {
+    /**
+     * @var EntityManagerInterface
+     */
     private $manager;
 
     public function __construct(
@@ -26,8 +29,11 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
         $this->manager = $manager;
     }
-    
-    public function save(User $user)
+
+    /**
+     * @param User $user
+     */
+    public function save(User $user): void
     {
         $this->manager->persist($user);
         $this->manager->flush();

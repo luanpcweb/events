@@ -52,7 +52,7 @@ class Talk
      */
     private $speaker;
 
-    public function setId($id) :void
+    public function setId($id): void
     {
         $this->id = $id;
     }
@@ -77,7 +77,7 @@ class Talk
         return $this->date;
     }
 
-    public function setDate(\DateTime $date)
+    public function setDate(\DateTime $date): void
     {
         $this->date = $date;
     }
@@ -87,7 +87,7 @@ class Talk
         return $this->event;
     }
 
-    public function setEvent(Event $event)
+    public function setEvent(Event $event): void
     {
         $this->event = $event;
     }
@@ -97,7 +97,7 @@ class Talk
         return $this->hour_start;
     }
 
-    public function setHourStart(\DateTime $hour_start)
+    public function setHourStart(\DateTime $hour_start): void
     {
         $this->hour_start = $hour_start;
     }
@@ -107,7 +107,7 @@ class Talk
         return $this->hour_end;
     }
 
-    public function setHourEnd(\DateTime $hour_end)
+    public function setHourEnd(\DateTime $hour_end): void
     {
         $this->hour_end = $hour_end;
     }
@@ -129,12 +129,18 @@ class Talk
         return $this->speaker;
     }
 
-    public function setSpeaker(Speaker $speaker)
+    /**
+     * @param Speaker $speaker
+     */
+    public function setSpeaker(Speaker $speaker): void
     {
         $this->speaker = $speaker;
     }
 
-    public function jsonSerialize()
+    /**
+     * @return array
+     */
+    public function jsonSerialize(): ?array
     {
         return [
             "id" => $this->getId(),

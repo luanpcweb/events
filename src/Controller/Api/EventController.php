@@ -17,6 +17,9 @@ use App\Exceptions\ErrorOnCreatingEvent;
   */
 class EventController extends AbstractController
 {
+    /**
+     * @var EventService
+     */
     private $eventService;
     
     public function __construct(EventService $eventService)
@@ -28,7 +31,6 @@ class EventController extends AbstractController
      */
     public function index(): Response
     {
-        
         $events = $this->eventService->listAll();
         return $this->json($events);
     }
@@ -42,84 +44,81 @@ class EventController extends AbstractController
             $request = $this->transformJsonBody($request);
 
             $event = $this->eventService->create(
-                $request->get('title'), 
-                new \DateTime($request->get('date_start')), 
-                new \DateTime($request->get('date_end')), 
+                $request->get('title'),
+                new \DateTime($request->get('date_start')),
+                new \DateTime($request->get('date_end')),
                 $request->get('description')
             );
 
             return $this->json(['msg' => 'Event created successfully', 'id' => $event->getId()], 201);
-        } catch(ErrorOnCreatingEvent $e) {
+        } catch (ErrorOnCreatingEvent $e) {
             return $this->json(['msg' => $e->getMessage()], 400);
-        }   
+        }
     }
 
     /**
      * @Route("/events/{id}", name="get_one_event", methods={"GET"})
      */
-    public function listOneBy($id): Response
+    public function listOneBy(string $id): Response
     {
         try {
             $event = $this->eventService->listOneBy($id);
             return $this->json($event);
         } catch (EventNotFound $e) {
-            return $this->json(['msg' => 'Event not found'], 400);
+            return $this->json(['msg' => 'Event not found'], 404);
         }
     }
 
     /**
     * @Route("/events/{id}", name="events_put", methods={"PUT"})
     */
-    public function edit(Request $request, $id): Response
+    public function edit(Request $request, string $id): Response
     {
-        
         try {
-            
             $request = $this->transformJsonBody($request);
 
-            $events = $this->eventService->edit(
+            $this->eventService->edit(
                 $id,
-                $request->get('title'), 
-                new \DateTime($request->get('date_start')), 
-                new \DateTime($request->get('date_end')), 
+                $request->get('title'),
+                new \DateTime($request->get('date_start')),
+                new \DateTime($request->get('date_end')),
                 $request->get('description')
             );
             
             return $this->json(['msg' => 'Event edited']);
-
         } catch (EventNotFound $e) {
-            return $this->json(['msg' => 'Event not found'], 400);
+            return $this->json(['msg' => 'Event not found'], 404);
         }
     }
 
     /**
     * @Route("/events/{id}", name="events_delete", methods={"DELETE"})
     */
-    public function delete($id): Response
+    public function delete(string $id): Response
     {
         try {
-            
-            $events = $this->eventService->delete($id);
-            return $this->json($events);
+
+            $this->eventService->delete($id);
+            return $this->json(['msg' => 'Event deleted']);
 
         } catch (EventNotFound $e) {
-            return $this->json(['msg' => 'Event not found'], 400);
+            return $this->json(['msg' => 'Event not found'], 404);
         }
     }
 
+    /**
+     * @param Request $request
+     * @return Request
+     */
     protected function transformJsonBody(
         \Symfony\Component\HttpFoundation\Request $request
-    )
+    ): Request
     {
         $data = json_decode($request->getContent(), true);
-    
         if ($data === null) {
-        return $request;
+            return $request;
         }
-    
         $request->request->replace($data);
-    
         return $request;
     }
-  
 }

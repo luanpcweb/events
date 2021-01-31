@@ -1,19 +1,20 @@
 <?php
+
 namespace App\Controller\Api;
 
-
-use App\Entity\User;
 use App\Exceptions\ErrorOnCreatingUser;
+use Symfony\Component\HttpFoundation\Response;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\User\UserInterface;
 use App\Service\UserService;
 
-class AuthController extends ApiController
+class AuthController extends AbstractController
 {
-
+    /**
+     * @var UserService
+     */
     private $userService;
     
     public function __construct(UserService $userService)
@@ -21,9 +22,8 @@ class AuthController extends ApiController
         $this->userService = $userService;
     }
 
-    public function register(Request $request)
+    public function register(Request $request): Response
     {
-        
         try {
             $request = $this->transformJsonBody($request);
 
@@ -31,7 +31,7 @@ class AuthController extends ApiController
             $password = $request->get('password');
             $email = $request->get('email');
 
-            $user = $this->userService->create(
+            $this->userService->create(
                 $username,
                 $password,
                 $email
@@ -39,7 +39,7 @@ class AuthController extends ApiController
 
             return $this->json(['msg' => 'User created successfully']);
 
-        } catch(ErrorOnCreatingUser $e) {
+        } catch (ErrorOnCreatingUser $e) {
             return $this->json(['msg' => $e->getMessage()], 400);
         }
     }
@@ -47,14 +47,29 @@ class AuthController extends ApiController
     /**
      * @param UserInterface $user
      * @param JWTTokenManagerInterface $JWTManager
-     * @return JsonResponse
+     * @return Response
      */
     public function login(
-        UserInterface $user, 
+        UserInterface $user,
         JWTTokenManagerInterface $JWTManager
-    )
+    ): Response
     {
-        return new JsonResponse(['token' => $JWTManager->create($user)]);
+        return $this->json(['token' => $JWTManager->create($user)]);
     }
 
+    /**
+     * @param Request $request
+     * @return Request
+     */
+    protected function transformJsonBody(
+        \Symfony\Component\HttpFoundation\Request $request
+    ): Request
+    {
+        $data = json_decode($request->getContent(), true);
+        if ($data === null) {
+            return $request;
+        }
+        $request->request->replace($data);
+        return $request;
+    }
 }

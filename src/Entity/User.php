@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Entity;
+
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -88,9 +89,9 @@ class User implements UserInterface
     }
 
     /**
-     * @param $password
+     * @param string $password
     */
-    public function setPassword($password)
+    public function setPassword(string $password): void
     {
         $this->password = $password;
     }
@@ -113,12 +114,12 @@ class User implements UserInterface
     /**
      * @return array|string[]
     */
-    public function getRoles()
+    public function getRoles(): mixed
     {
         return array('ROLE_USER');
     }
 
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
     }
 }

@@ -56,7 +56,7 @@ class Event
     {
         return $this->title;
     }
-    
+
     public function setTitle($title): void
     {
         $this->title = $title;
@@ -102,7 +102,10 @@ class Event
         $this->date_created = $date_created;
     }
 
-    public function jsonSerialize()
+    /**
+     * @return array
+     */
+    public function jsonSerialize(): array
     {
         return [
             "id" => $this->getId(),

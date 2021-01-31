@@ -16,6 +16,9 @@ use App\Exceptions\EventNotFound;
  */
 class EventRepository extends ServiceEntityRepository
 {
+    /**
+     * @var EntityManagerInterface
+     */
     private $manager;
 
     public function __construct(
@@ -27,20 +30,30 @@ class EventRepository extends ServiceEntityRepository
         $this->manager = $manager;
     }
 
-    public function save(Event $event)
+    /**
+     * @param Event $event
+     */
+    public function save(Event $event): void
     {
         $this->manager->persist($event);
         $this->manager->flush();
     }
 
-    public function update(Event $data)
+    /**
+     * @param Event $data
+     */
+    public function update(Event $data): void
     {
 
         $this->manager->persist($data);
         $this->manager->flush();
     }
 
-    public function destroy($id)
+    /**
+     * @param string $id
+     * @throws EventNotFound
+     */
+    public function destroy(string $id): void
     {
         $event = $this->find($id);
         if(!$event) {

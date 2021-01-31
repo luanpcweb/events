@@ -5,7 +5,6 @@ namespace App\Controller\Api;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use App\Service\TalkService;
 use App\Exceptions\ErrorOnCreatingTalk;
 use App\Exceptions\TalkNotFound;
@@ -17,8 +16,11 @@ use App\Exceptions\TalkNotFound;
   */
 class TalkController extends AbstractController
 {
+    /**
+     * @var TalkService
+     */
     private $talkService;
-    
+
     public function __construct(TalkService $talkService)
     {
         $this->talkService = $talkService;
@@ -28,7 +30,6 @@ class TalkController extends AbstractController
      */
     public function index(): Response
     {
-        
         $events = $this->talkService->listAll();
         return $this->json($events);
     }
@@ -42,90 +43,87 @@ class TalkController extends AbstractController
             $request = $this->transformJsonBody($request);
 
             $talk = $this->talkService->create(
-                $request->get('title'), 
-                new \DateTime($request->get('date')), 
-                new \DateTime($request->get('hour_start')), 
-                new \DateTime($request->get('hour_end')), 
+                $request->get('title'),
+                new \DateTime($request->get('date')),
+                new \DateTime($request->get('hour_start')),
+                new \DateTime($request->get('hour_end')),
                 $request->get('description'),
                 $request->get('event_id'),
                 $request->get('speaker_id')
             );
 
             return $this->json(['msg' => 'Talk created successfully', 'id' => $talk->getId()], 201);
-        } catch(ErrorOnCreatingTalk $e) {
+        } catch (ErrorOnCreatingTalk $e) {
             return $this->json(['msg' => $e->getMessage()], 400);
-        }   
+        }
     }
 
     /**
      * @Route("/talks/{id}", name="get_one_talk", methods={"GET"})
      */
-    public function listOneBy($id): Response
+    public function listOneBy(string $id): Response
     {
         try {
             $talk = $this->talkService->listOneBy($id);
             return $this->json($talk);
         } catch (TalkNotFound $e) {
-            return $this->json(['msg' => 'Talk not found'], 400);
+            return $this->json(['msg' => 'Talk not found'], 404);
         }
     }
 
     /**
     * @Route("/talks/{id}", name="talks_put", methods={"PUT"})
     */
-    public function edit(Request $request, $id): Response
+    public function edit(Request $request, string $id): Response
     {
-        
         try {
             
             $request = $this->transformJsonBody($request);
-
-            $talk = $this->talkService->edit(
+            $this->talkService->edit(
                 $id,
-                $request->get('title'), 
-                new \DateTime($request->get('date')), 
-                new \DateTime($request->get('hour_start')), 
-                new \DateTime($request->get('hour_end')), 
+                $request->get('title'),
+                new \DateTime($request->get('date')),
+                new \DateTime($request->get('hour_start')),
+                new \DateTime($request->get('hour_end')),
                 $request->get('description'),
                 $request->get('event_id'),
                 $request->get('speaker_id')
             );
-            
             return $this->json(['msg' => 'Talk edited']);
 
         } catch (TalkNotFound $e) {
-            return $this->json(['msg' => 'Talk not found'], 400);
+            return $this->json(['msg' => 'Talk not found'], 404);
         }
     }
 
     /**
     * @Route("/talks/{id}", name="tlaks_delete", methods={"DELETE"})
     */
-    public function delete($id): Response
+    public function delete(string $id): Response
     {
         try {
             
-            $talk = $this->talkService->delete($id);
-            return $this->json($talk);
+            $this->talkService->delete($id);
+            return $this->json(['msg' => 'Talk deleted']);
 
         } catch (TalkNotFound $e) {
-            return $this->json(['msg' => 'Talk not found'], 400);
+            return $this->json(['msg' => 'Talk not found'], 404);
         }
     }
 
+    /**
+     * @param Request $request
+     * @return Request
+     */
     protected function transformJsonBody(
         \Symfony\Component\HttpFoundation\Request $request
-    )
+    ): Request
     {
         $data = json_decode($request->getContent(), true);
-    
         if ($data === null) {
-        return $request;
+            return $request;
         }
-    
         $request->request->replace($data);
-    
         return $request;
     }
-
 }

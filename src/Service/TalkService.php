@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 namespace App\Service;
 
 use Ramsey\Uuid\Uuid;
@@ -11,24 +12,47 @@ use App\Exceptions\ErrorOnEditingTalk;
 use App\Exceptions\TalkNotFound;
 use Exception;
 
+/**
+ * Class TalkService
+ * @package App\Service
+ */
 class TalkService
 {
+    /**
+     * @var TalkRepository
+     */
     private $talkRepository;
+
+    /**
+     * @var EventRepository
+     */
     private $eventRepository;
+
+    /**
+     * @var SpeakerRepository
+     */
     private $speakerRepository;
 
+    /**
+     * TalkService constructor.
+     * @param TalkRepository $talkRepository
+     * @param EventRepository $eventRepository
+     * @param SpeakerRepository $speakerRepository
+     */
     public function __construct(
         TalkRepository $talkRepository,
         EventRepository $eventRepository,
         SpeakerRepository $speakerRepository
-    )
-    {
+    ) {
         $this->talkRepository = $talkRepository;
         $this->eventRepository = $eventRepository;
         $this->speakerRepository = $speakerRepository;
     }
 
-    public function listAll()
+    /**
+     * @return array
+     */
+    public function listAll(): array
     {
         $talks = $this->talkRepository->findAll();
         $data = [];
@@ -50,17 +74,27 @@ class TalkService
         return $data;
     }
 
+    /**
+     * @param string $title
+     * @param \DateTime $date
+     * @param \DateTime $hourStart
+     * @param \DateTime $hourEnd
+     * @param string $description
+     * @param string $eventId
+     * @param string $speakerId
+     * @return Talk
+     * @throws ErrorOnCreatingTalk
+     */
     public function create(
-        string $title, 
-        \DateTime $date, 
-        \DateTime $hourStart, 
-        \DateTime $hourEnd, 
+        string $title,
+        \DateTime $date,
+        \DateTime $hourStart,
+        \DateTime $hourEnd,
         string $description,
         string $eventId,
         string $speakerId
-    )
+    ): Talk
     {
-
         if (empty($title)) {
             throw new ErrorOnCreatingTalk('Empty Title');
         }
@@ -78,24 +112,23 @@ class TalkService
         }
 
         $event = $this->eventRepository->findOneBy(['id' => $eventId]);
-        if(!$event) {
+        if (!$event) {
             throw new ErrorOnCreatingTalk('Event not found');
         }
 
         $speaker = $this->speakerRepository->findOneBy(['id' => $speakerId]);
-        if(!$speaker) {
+        if (!$speaker) {
             throw new ErrorOnCreatingTalk('Speaker not found');
         }
 
         try {
-
             $now = new \DateTime('now', new \DateTimeZone('UTC'));
             $uuid = Uuid::uuid5(Uuid::NAMESPACE_URL, $title . $description . $now->format('Ymdims') . $eventId);
 
             $talk = new Talk();
             $talk->setId($uuid);
-            $talk->setTitle($title); 
-            $talk->setDate($date); 
+            $talk->setTitle($title);
+            $talk->setDate($date);
             $talk->setHourStart($hourStart);
             $talk->setHourEnd($hourEnd);
             $talk->setDescription($description);
@@ -105,16 +138,20 @@ class TalkService
             $this->talkRepository->save($talk);
 
             return $talk;
-
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             throw new ErrorOnCreatingTalk('Error in creating Talk');
         }
     }
 
-    public function listOneBy($id)
+    /**
+     * @param string $id
+     * @return array<Talk>
+     * @throws TalkNotFound
+     */
+    public function listOneBy(string $id): array
     {
         $talk = $this->talkRepository->findOneBy(['id' => $id]);
-        if(!$talk) {
+        if (!$talk) {
             throw new TalkNotFound('Talk not found');
         }
 
@@ -134,50 +171,64 @@ class TalkService
         return $data;
     }
 
+    /**
+     * @param string $id
+     * @param string $title
+     * @param \DateTime $date
+     * @param \DateTime $hourStart
+     * @param \DateTime $hourEnd
+     * @param string $description
+     * @param string $eventId
+     * @param string $speakerId
+     * @throws ErrorOnEditingTalk
+     * @throws TalkNotFound
+     */
     public function edit(
-        $id,
-        string $title, 
-        \DateTime $date, 
-        \DateTime $hourStart, 
-        \DateTime $hourEnd, 
+        string $id,
+        string $title,
+        \DateTime $date,
+        \DateTime $hourStart,
+        \DateTime $hourEnd,
         string $description,
         string $eventId,
         string $speakerId
-    )
+    ): void
     {
         $talk = $this->talkRepository->find($id);
-        if(!$talk) {
+        if (!$talk) {
             throw new TalkNotFound('Talk not found');
         }
 
         $event = $this->eventRepository->findOneBy(['id' => $eventId]);
-        if(!$event) {
+        if (!$event) {
             throw new ErrorOnEditingTalk('Event not found');
         }
 
         $speaker = $this->speakerRepository->findOneBy(['id' => $speakerId]);
-        if(!$speaker) {
+        if (!$speaker) {
             throw new ErrorOnEditingTalk('Speaker not found');
         }
 
         try {
-
-            (!empty($title)) ? $talk->setTitle($title) : ''; 
-            (!empty($date)) ? $talk->setDate($date) : ''; 
-            (!empty($hourStart)) ? $talk->setHourStart($hourStart) : ''; 
-            (!empty($hourEnd)) ? $talk->setHourEnd($hourEnd) : ''; 
+            (!empty($title)) ? $talk->setTitle($title) : '';
+            (!empty($date)) ? $talk->setDate($date) : '';
+            (!empty($hourStart)) ? $talk->setHourStart($hourStart) : '';
+            (!empty($hourEnd)) ? $talk->setHourEnd($hourEnd) : '';
             (!empty($description)) ? $talk->setDescription($description) : '';
             (!empty($event)) ? $talk->setEvent($event) : '';
             (!empty($speaker)) ? $talk->setSpeaker($speaker) : '';
 
             $this->talkRepository->update($talk);
-
         } catch (Exception $e) {
-           throw new ErrorOnEditingTalk('Error in creating Talk');
+            throw new ErrorOnEditingTalk('Error in creating Talk');
         }
     }
 
-    public function delete($id)
+    /**
+     * @param string $id
+     * @throws TalkNotFound
+     */
+    public function delete(string $id): void
     {
         $this->talkRepository->destroy($id);
     }

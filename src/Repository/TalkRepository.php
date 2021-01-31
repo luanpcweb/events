@@ -16,6 +16,9 @@ use App\Exceptions\TalkNotFound;
  */
 class TalkRepository extends ServiceEntityRepository
 {
+    /**
+     * @var EntityManagerInterface
+     */
     private $manager;
 
     public function __construct(
@@ -26,21 +29,31 @@ class TalkRepository extends ServiceEntityRepository
         parent::__construct($registry, Talk::class);
         $this->manager = $manager;
     }
-    
-    public function save(Talk $talk)
+
+    /**
+     * @param Talk $talk
+     */
+    public function save(Talk $talk): void
     {
         $this->manager->persist($talk);
         $this->manager->flush();
     }
 
-    public function update(Talk $data)
+    /**
+     * @param Talk $data
+     */
+    public function update(Talk $data): void
     {
 
         $this->manager->persist($data);
         $this->manager->flush();
     }
 
-    public function destroy($id)
+    /**
+     * @param string $id
+     * @throws TalkNotFound
+     */
+    public function destroy(string $id): void
     {
         $talk = $this->find($id);
         if(!$talk) {
