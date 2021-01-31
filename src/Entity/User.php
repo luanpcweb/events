@@ -114,7 +114,7 @@ class User implements UserInterface
     /**
      * @return array|string[]
     */
-    public function getRoles(): mixed
+    public function getRoles(): array
     {
         return array('ROLE_USER');
     }
