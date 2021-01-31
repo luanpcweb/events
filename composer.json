@@ -53,7 +53,12 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
-        ]
+        ],
+        "tests":["vendor/bin/phpunit --testdox --color tests"],
+        "analyse":["vendor/bin/phpstan analyse src --level=6"],
+        "phpcs":["vendor/bin/phpcs --colors --standard=PSR1,PSR12 src"],
+        "phpcbf":["vendor/bin/phpcs --colors --standard=PSR1,PSR12 src"],
+        "all":["@tests", "@analyse", "@phpcs"]
     },
     "conflict": {
         "symfony/symfony": "*"
@@ -65,6 +70,9 @@
         }
     },
     "require-dev": {
+        "phpstan/phpstan": "^0.12.70",
+        "phpunit/phpunit": "^8.5",
+        "squizlabs/php_codesniffer": "^3.5",
         "symfony/maker-bundle": "^1.28"
     }
 }
