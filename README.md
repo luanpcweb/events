@@ -17,7 +17,7 @@ Sistema de cadastro de eventos.
 
 `` $ docker-compose up -d ``
 
-## Endpoints da API 
+## Endpoints API 
 
 ### User 
 
@@ -93,3 +93,11 @@ Sistema de cadastro de eventos.
 
 * [DELETE] http://localhost:8000/api/talks/{id}
 
+## Fakes Values
+
+### User
+- Email: test@me.com
+- Password: 12345678
+
+### Speaker
+- ID: 0218d78e-6438-11eb-aa73-0242ac180002
