@@ -17,6 +17,10 @@ Sistema de cadastro de eventos.
 
 `` $ docker-compose up -d ``
 
+## Executar Testes Unitários
+
+`` docker-compose exec php-fpm composer tests ``
+
 ## Endpoints API 
 
 ### User 
