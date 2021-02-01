@@ -107,7 +107,7 @@ class TalkService
             throw new ErrorOnCreatingTalk('Empty Event ID');
         }
 
-        if (empty($description)) {
+        if (empty($speakerId)) {
             throw new ErrorOnCreatingTalk('Empty Speaker ID');
         }
 
