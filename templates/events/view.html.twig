@@ -23,12 +23,12 @@
 
                                 <div class="form-group">
                                     <label for="date_start">Date Start</label>
-                                    <input type="text" class="form-control datepicker" id="date_start" name="date_start" value="{{ event.date_start }}">
+                                    <input type="text" class="form-control datepicker" id="date_start" name="date_start" value="{{ event.date_start|date("m/d/Y") }}">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="date_end">Date End</label>
-                                    <input type="text" class="form-control datepicker" id="date_end" name="date_end" value="{{ event.date_end }}">
+                                    <input type="text" class="form-control datepicker" id="date_end" name="date_end" value="{{ event.date_end|date("m/d/Y") }}">
                                 </div>
 
                                 <div class="form-group">

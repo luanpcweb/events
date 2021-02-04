@@ -25,10 +25,10 @@
                                 {% for value in events %}
                                     <tr>
                                         <td>{{ value.title }}</td>
-                                        <td>{{ value.date_start }}</td>
-                                        <td>{{ value.date_end }}</td>
+                                        <td>{{ value.date_start|date("m/d/Y") }}</td>
+                                        <td>{{ value.date_end|date("m/d/Y") }}</td>
                                         <td>{{ value.description }}</td>
-                                        <td>{{ value.date_created }}</td>
+                                        <td>{{ value.date_created|date("m/d/Y") }}</td>
                                         <td>
                                             <a type="button" class="btn btn-info" href="{{ path('view_event', { 'id' : value.id }) }}">View</a>
                                             <button type="button" class="btn btn-danger btnActionDelete" route="/event/delete/{{ value.id }}">Delete</button>
