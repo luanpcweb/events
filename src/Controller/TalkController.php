@@ -88,9 +88,8 @@ class TalkController extends AbstractController
                 $request->get('speaker_id')
             );
 
-            return $this->render('boxMsg.html.twig', [
-                'type' => 'alert-success',
-                'msg' => 'Created with success!'
+            return $this->render('redirect.html.twig', [
+                'redirect' => '/talks'
             ]);
         } catch (ErrorOnCreatingTalk $e) {
             $msg = $e->getMessage();

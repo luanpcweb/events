@@ -77,9 +77,8 @@ class EventController extends AbstractController
                 $request->get('description')
             );
 
-            return $this->render('boxMsg.html.twig', [
-                'type' => 'alert-success',
-                'msg' => 'Created with success!'
+            return $this->render('redirect.html.twig', [
+                'redirect' => '/'
             ]);
         } catch (ErrorOnCreatingEvent $e) {
             $msg = $e->getMessage();
