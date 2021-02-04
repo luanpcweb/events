@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\TalkService;
 use App\Exceptions\ErrorOnCreatingTalk;
+use App\Exceptions\ErrorOnEditingTalk;
 use App\Exceptions\TalkNotFound;
 
 /**
@@ -94,7 +95,12 @@ class TalkController extends AbstractController
 
         } catch (TalkNotFound $e) {
             return $this->json(['msg' => 'Talk not found'], 404);
+        } catch (ErrorOnEditingTalk $e) {
+            return $this->json(['msg' => $e->getMessage()], 400);
+        } catch (\Exception $e) {
+            return $this->json(['msg' => $e->getMessage()], 400);
         }
+
     }
 
     /**
