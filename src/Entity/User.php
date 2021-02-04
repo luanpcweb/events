@@ -18,7 +18,7 @@ class User implements UserInterface
      */
     private $id;
     /**
-     * @ORM\Column(type="string", length=25, unique=true)
+     * @ORM\Column(type="string", length=25)
     */
     private $username;
     /**
@@ -27,7 +27,7 @@ class User implements UserInterface
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=45)
+     * @ORM\Column(type="string", length=45, unique=true)
     */
     private $email;
 

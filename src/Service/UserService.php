@@ -41,24 +41,29 @@ class UserService
      * Create User
      *
      * @param string $username
-     * @param string $password
      * @param string $email
+     * @param string $password
+     * @param string $confirmPassword
      * @return User
      * @throws ErrorOnCreatingUser
      */
     public function create(
         string $username,
+        string $email,
         string $password,
-        string $email
+        string $confirmPassword
     ) {
         if (empty($username)) {
             throw new ErrorOnCreatingUser('Empty Username');
         }
+        if (empty($email)) {
+            throw new ErrorOnCreatingUser('Empty email');
+        }
         if (empty($password)) {
             throw new ErrorOnCreatingUser('Empty Password');
         }
-        if (empty($email)) {
-            throw new ErrorOnCreatingUser('Empty email');
+        if ($confirmPassword !== $password) {
+            throw new ErrorOnCreatingUser('Password not match');
         }
 
         try {
@@ -73,6 +78,7 @@ class UserService
             $user->setUsername($username);
             $user->setPassword($this->encoder->encodePassword($user, $password));
             $user->setEmail($email);
+            $user->setRoles(["ROLE_USER"]);
 
             $this->userRepository->save($user);
 

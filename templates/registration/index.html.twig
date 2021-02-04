@@ -6,37 +6,33 @@
                 <div class="card bg-light mb-3 mt-5" style="width: 800px">
                     <div class="card-body">
                         <div class="card-header mb-3">Registration Form</div>
-                        {{ form_start(form) }}
-                        <div class="form_group">
-                            <div class="col-md-12 mb-3">
-                                {{ form_row(form.name, {'attr': {'class': 'form-control'}}) }}
+                        <div id="statusForm"></div>
+
+                        <form id="form" method="post">
+                            <div class="form-group">
+                                <label for="username">Username</label>
+                                <input type="text" class="form-control" id="username" name="username">
                             </div>
-                        </div>
-                        <div class="form_group">
-                            <div class="col-md-12 mb-3">
-                                {{ form_row(form.email, {'attr': {'class': 'form-control'}}) }}
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email" name="email">
                             </div>
-                        </div>
-                        <div class="form_group">
-                            <div class="col-md-12 mb-3">
-                                {{ form_row(form.password.first, {'attr': {'class':
-                                    'form-control'}}) }}
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="text" class="form-control" id="password" name="password">
                             </div>
-                        </div>
-                        <div class="form_group">
-                            <div class="col-md-12 mb-3">
-                                {{ form_row(form.password.second, {'attr': {'class':
-                                    'form-control'}}) }}
+                            <div class="form-group">
+                                <label for="confirm_password">Confirm Password</label>
+                                <input type="text" class="form-control" id="confirm_password" name="confirm_password">
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-8 col-md-offset-4" style="margin-top:5px;">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fa fa-btn fa-user"></i> Register
-                                </button>
+                            <div class="form-group">
+                                <div class="col-md-8 col-md-offset-4" style="margin-top:5px;">
+                                    <a type="submit" class="btn btn-primary" id="btnAction" route="/register">
+                                        <i class="fa fa-btn fa-user"></i> Register
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                        {{ form_end(form) }}
+                        </form>
                     </div>
                 </div>
             </div>

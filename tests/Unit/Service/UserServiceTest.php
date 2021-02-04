@@ -49,8 +49,9 @@ class UserServiceTest extends TestCase
         $this->userRepository->expects($this->once())->method('save');
         $this->userService->create(
             $username,
+            $email,
             $password,
-            $email
+            $password
         );
     }
 
@@ -76,8 +77,9 @@ class UserServiceTest extends TestCase
 
         $this->userService->create(
             $username,
+            $email,
             $password,
-            $email
+            $password
         );
 
     }
@@ -101,8 +103,9 @@ class UserServiceTest extends TestCase
 
         $this->userService->create(
             $username,
+            $email,
             $password,
-            $email
+            $password
         );
     }
 
@@ -125,8 +128,9 @@ class UserServiceTest extends TestCase
 
         $this->userService->create(
             $username,
+            $email,
             $password,
-            $email
+            $password
         );
     }
 
@@ -149,8 +153,9 @@ class UserServiceTest extends TestCase
 
         $this->userService->create(
             $username,
+            $email,
             $password,
-            $email
+            $password
         );
     }
 
