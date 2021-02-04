@@ -21,6 +21,11 @@ Sistema de cadastro de eventos.
 
 `` $ docker-compose exec php-fpm composer tests ``
 
+## Painel Web
+
+http://localhost:8000/
+
+
 ## Endpoints API 
 
 ### User 
@@ -97,11 +102,12 @@ Sistema de cadastro de eventos.
 
 * [DELETE] http://localhost:8000/api/talks/{id}
 
+### Speakers
+
+* [GET] http://localhost:8000/api/speakers
+
 ## Fakes Values
 
 ### User
 - Email: test@me.com
 - Password: 12345678
-
-### Speaker
-- ID: 0218d78e-6438-11eb-aa73-0242ac180002
