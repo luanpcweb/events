@@ -28,7 +28,8 @@ class Talk
     private $date;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Event", inversedBy="talk", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Event")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $event;
 
@@ -48,7 +49,7 @@ class Talk
     private $description;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Speaker", inversedBy="talk", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Speaker", inversedBy="talk")
      */
     private $speaker;
 

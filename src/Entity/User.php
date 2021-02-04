@@ -32,6 +32,11 @@ class User implements UserInterface
     private $email;
 
     /**
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
+
+    /**
      * User constructor.
     * @param $username
     */
@@ -111,12 +116,21 @@ class User implements UserInterface
         $this->email = $email;
     }
 
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+        return $this;
+    }
+
     /**
      * @return array|string[]
     */
     public function getRoles(): array
     {
-        return array('ROLE_USER');
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+        return array_unique($roles);
     }
 
     public function eraseCredentials(): void
