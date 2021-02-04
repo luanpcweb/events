@@ -59,8 +59,11 @@ class TalkServiceTest extends TestCase
         $eventId = '31231231231s';
         $speakerId = '423wedwqee23';
 
-        $event = new Event();
         $speaker = new Speaker();
+
+        $event = new Event();
+        $event->setDateStart(new \DateTime('2021-11-09'));
+        $event->setDateEnd(new \DateTime('2021-11-19'));
 
         $this->eventRepository->method('findOneBy')
             ->willReturn($event);
@@ -94,6 +97,9 @@ class TalkServiceTest extends TestCase
         $speakerId = '423wedwqee23';
 
         $event = new Event();
+        $event->setDateStart(new \DateTime('2021-11-09'));
+        $event->setDateEnd(new \DateTime('2021-11-19'));
+
         $speaker = new Speaker();
 
         $this->eventRepository->method('findOneBy')
@@ -132,6 +138,9 @@ class TalkServiceTest extends TestCase
         $speakerId = '423wedwqee23';
 
         $event = new Event();
+        $event->setDateStart(new \DateTime('2021-11-09'));
+        $event->setDateEnd(new \DateTime('2021-11-19'));
+
         $speaker = new Speaker();
 
         $this->eventRepository->method('findOneBy')
@@ -170,6 +179,9 @@ class TalkServiceTest extends TestCase
         $speakerId = '423wedwqee23';
 
         $event = new Event();
+        $event->setDateStart(new \DateTime('2021-11-09'));
+        $event->setDateEnd(new \DateTime('2021-11-19'));
+
         $speaker = new Speaker();
 
         $this->eventRepository->method('findOneBy')
@@ -208,6 +220,9 @@ class TalkServiceTest extends TestCase
         $speakerId = '';
 
         $event = new Event();
+        $event->setDateStart(new \DateTime('2021-11-09'));
+        $event->setDateEnd(new \DateTime('2021-11-19'));
+
         $speaker = new Speaker();
 
         $this->eventRepository->method('findOneBy')
