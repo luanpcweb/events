@@ -7,7 +7,6 @@ use App\Repository\TalkRepository;
 use App\Repository\EventRepository;
 use App\Repository\SpeakerRepository;
 
-
 /**
  * Class TalkService
  * @package App\Service
@@ -47,5 +46,4 @@ class SpeakerService
 
         return $data;
     }
-
 }

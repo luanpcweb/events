@@ -88,7 +88,6 @@ class EventController extends AbstractController
             'type' => 'alert-danger',
             'msg' => $msg
         ]);
-
     }
 
     /**
@@ -100,12 +99,11 @@ class EventController extends AbstractController
         if (!$this->getUser() || !$id) {
             return $this->redirectToRoute('app_login');
         }
-        $event = [];
 
+        $event = [];
         try {
             $event = $this->eventService->listOneBy($id);
-        }  catch (EventNotFound $e) {
-
+        } catch (EventNotFound $e) {
         }
 
         return $this->render('events/view.html.twig', [
@@ -160,13 +158,11 @@ class EventController extends AbstractController
         }
 
         try {
-
             $this->eventService->delete($id);
 
             return $this->render('redirect.html.twig', [
                 'redirect' => '/',
             ]);
-
         } catch (\EventNotFound $e) {
             $msg = $e->getMessage();
         } catch (\Exception $e) {
@@ -178,7 +174,5 @@ class EventController extends AbstractController
             'msg' => $msg
         ]);
 
-
     }
-
 }

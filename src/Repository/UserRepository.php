@@ -24,8 +24,7 @@ class UserRepository extends ServiceEntityRepository
     public function __construct(
         ManagerRegistry $registry,
         EntityManagerInterface $manager
-    )
-    {
+    ) {
         parent::__construct($registry, User::class);
         $this->manager = $manager;
     }
@@ -38,5 +37,4 @@ class UserRepository extends ServiceEntityRepository
         $this->manager->persist($user);
         $this->manager->flush();
     }
-
 }

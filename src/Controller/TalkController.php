@@ -44,7 +44,6 @@ class TalkController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-
         return $this->render('talks/index.html.twig', [
             'talks' => $this->talkService->listAll(),
         ]);
@@ -77,7 +76,6 @@ class TalkController extends AbstractController
         }
 
         try {
-
             $this->talkService->create(
                 $request->get('title'),
                 new \DateTime($request->get('date')),
@@ -93,8 +91,7 @@ class TalkController extends AbstractController
             ]);
         } catch (ErrorOnCreatingTalk $e) {
             $msg = $e->getMessage();
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             $msg = 'Failed Create!';
         }
 
@@ -135,27 +132,24 @@ class TalkController extends AbstractController
         }
 
         try {
-
             $this->talkService->edit(
-                 $request->get('id'),
-                 $request->get('title'),
-                 new \DateTime($request->get('date')),
-                 new \DateTime($request->get('hour_start')),
-                 new \DateTime($request->get('hour_end')),
-                 $request->get('description'),
-                 $request->get('event_id'),
-                 $request->get('speaker_id')
+                $request->get('id'),
+                $request->get('title'),
+                new \DateTime($request->get('date')),
+                new \DateTime($request->get('hour_start')),
+                new \DateTime($request->get('hour_end')),
+                $request->get('description'),
+                $request->get('event_id'),
+                $request->get('speaker_id')
             );
 
             return $this->render('boxMsg.html.twig', [
                 'type' => 'alert-success',
                 'msg' => 'Edited with success!'
             ]);
-
         } catch (ErrorOnEditingTalk $e) {
             $msg = $e->getMessage();
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             $msg = 'Failed Create!';
         }
 
@@ -177,20 +171,16 @@ class TalkController extends AbstractController
         }
 
         try {
-
             $this->talkService->delete($id);
 
             return $this->render('redirect.html.twig', [
                 'redirect' => '/talks',
             ]);
-
         } catch (\Exception $e) {
-
             return $this->render('boxMsg.html.twig', [
                 'type' => 'alert-danger',
                 'msg' => 'Failed delete!'
             ]);
-
         }
 
     }

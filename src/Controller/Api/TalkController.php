@@ -79,7 +79,6 @@ class TalkController extends AbstractController
     public function edit(Request $request, string $id): Response
     {
         try {
-            
             $request = $this->transformJsonBody($request);
             $this->talkService->edit(
                 $id,
@@ -92,7 +91,6 @@ class TalkController extends AbstractController
                 $request->get('speaker_id')
             );
             return $this->json(['msg' => 'Talk edited']);
-
         } catch (TalkNotFound $e) {
             return $this->json(['msg' => 'Talk not found'], 404);
         } catch (ErrorOnEditingTalk $e) {
@@ -100,7 +98,6 @@ class TalkController extends AbstractController
         } catch (\Exception $e) {
             return $this->json(['msg' => $e->getMessage()], 400);
         }
-
     }
 
     /**
@@ -109,10 +106,8 @@ class TalkController extends AbstractController
     public function delete(string $id): Response
     {
         try {
-            
             $this->talkService->delete($id);
             return $this->json(['msg' => 'Talk deleted']);
-
         } catch (TalkNotFound $e) {
             return $this->json(['msg' => 'Talk not found'], 404);
         }

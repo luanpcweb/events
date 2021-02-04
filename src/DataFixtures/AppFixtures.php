@@ -24,7 +24,7 @@ class AppFixtures extends Fixture
 
         $faker = Factory::create();
 
-        for ($i=0; $i < 4; $i++) {
+        for ($i = 0; $i < 4; $i++) {
             $speaker = new Speaker();
             $speaker->setName($faker->name());
             $speaker->setCity('São Paulo');

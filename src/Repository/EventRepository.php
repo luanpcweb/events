@@ -24,8 +24,7 @@ class EventRepository extends ServiceEntityRepository
     public function __construct(
         ManagerRegistry $registry,
         EntityManagerInterface $manager
-    )
-    {
+    ) {
         parent::__construct($registry, Event::class);
         $this->manager = $manager;
     }
@@ -56,12 +55,11 @@ class EventRepository extends ServiceEntityRepository
     public function destroy(string $id): void
     {
         $event = $this->find($id);
-        if(!$event) {
+        if (!$event) {
             throw new EventNotFound('Event not found');
         }
 
         $this->manager->remove($event);
         $this->manager->flush();
     }
-    
 }

@@ -25,7 +25,6 @@ class AuthController extends AbstractController
     public function register(Request $request): Response
     {
         try {
-
             $typeResponse = 'json';
             if ($request->headers->get('Content-Type') !== 'application/json') {
                 $typeResponse = 'web';
@@ -46,7 +45,6 @@ class AuthController extends AbstractController
             );
 
             return $this->registerResponse($typeResponse, 'success', 'User created successfully', '/');
-
         } catch (ErrorOnCreatingUser $e) {
             return $this->registerResponse($typeResponse, 'fail', $e->getMessage(), null);
         } catch (\Exception $e) {
@@ -85,7 +83,7 @@ class AuthController extends AbstractController
 
     private function registerResponse($typeResponse, $status, $msg, $redirect)
     {
-        if($typeResponse == 'web') {
+        if ($typeResponse == 'web') {
             if ($status == 'success') {
                 return $this->render('redirect.html.twig', [
                     'redirect' => $redirect

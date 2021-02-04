@@ -24,8 +24,7 @@ class TalkRepository extends ServiceEntityRepository
     public function __construct(
         ManagerRegistry $registry,
         EntityManagerInterface $manager
-    )
-    {
+    ) {
         parent::__construct($registry, Talk::class);
         $this->manager = $manager;
     }
@@ -44,7 +43,6 @@ class TalkRepository extends ServiceEntityRepository
      */
     public function update(Talk $data): void
     {
-
         $this->manager->persist($data);
         $this->manager->flush();
     }
@@ -56,7 +54,7 @@ class TalkRepository extends ServiceEntityRepository
     public function destroy(string $id): void
     {
         $talk = $this->find($id);
-        if(!$talk) {
+        if (!$talk) {
             throw new TalkNotFound('Talk not found');
         }
 

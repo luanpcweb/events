@@ -102,15 +102,12 @@ class TalkService
         if (empty($title)) {
             throw new ErrorOnCreatingTalk('Empty Title');
         }
-        
         if (empty($description)) {
             throw new ErrorOnCreatingTalk('Empty Description');
         }
-
         if (empty($eventId)) {
             throw new ErrorOnCreatingTalk('Empty Event ID');
         }
-
         if (empty($speakerId)) {
             throw new ErrorOnCreatingTalk('Empty Speaker ID');
         }
@@ -122,8 +119,8 @@ class TalkService
 
         if (
             ($date->format('Y-m-d H:i:s') < $event->getDateStartString()) ||
-            ($date->format('Y-m-d H:i:s') > $event->getDateEndString()))
-        {
+            ($date->format('Y-m-d H:i:s') > $event->getDateEndString())
+        ) {
             throw new ErrorOnCreatingTalk('Date outside the event period');
         }
 
@@ -217,8 +214,8 @@ class TalkService
 
         if (
             ($date->format('Y-m-d H:i:s') < $event->getDateStartString()) ||
-            ($date->format('Y-m-d H:i:s') > $event->getDateEndString()))
-        {
+            ($date->format('Y-m-d H:i:s') > $event->getDateEndString())
+        ) {
             throw new ErrorOnEditingTalk('Date outside the event period');
         }
 

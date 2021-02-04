@@ -149,7 +149,6 @@ class EventService
             (!empty($description)) ? $event->setDescription($description) : '';
 
             $this->eventRepository->update($event);
-
         } catch (Exception $e) {
             throw new ErrorOnEditingEvent('Error in editing event');
         }
