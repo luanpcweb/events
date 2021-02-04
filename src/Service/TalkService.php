@@ -54,24 +54,28 @@ class TalkService
      */
     public function listAll(): array
     {
-        $talks = $this->talkRepository->findAll();
-        $data = [];
-        foreach ($talks as $talk) {
-            $data[] = [
-                "id" => $talk->getId(),
-                "title" => $talk->getTitle(),
-                "date" => $talk->getDate()->format('Y-m-d'),
-                "hour_start" => $talk->getHourStart()->format('H:i:s'),
-                "hour_end" => $talk->getHourEnd()->format('H:i:s'),
-                "description" => $talk->getDescription(),
-                "event" => $talk->getEvent()->getTitle(),
-                "event_id" => $talk->getEvent()->getId(),
-                "speaker" => $talk->getSpeaker()->getName(),
-                "speaker_id" => $talk->getSpeaker()->getId(),
-            ];
-        }
+        try {
+            $talks = $this->talkRepository->findAll();
+            $data = [];
+            foreach ($talks as $talk) {
+                $data[] = [
+                    "id" => $talk->getId(),
+                    "title" => $talk->getTitle(),
+                    "date" => $talk->getDate()->format('Y-m-d'),
+                    "hour_start" => $talk->getHourStart()->format('H:i:s'),
+                    "hour_end" => $talk->getHourEnd()->format('H:i:s'),
+                    "description" => $talk->getDescription(),
+                    "event" => $talk->getEvent()->getTitle(),
+                    "event_id" => $talk->getEvent()->getId(),
+                    "speaker" => $talk->getSpeaker()->getName(),
+                    "speaker_id" => $talk->getSpeaker()->getId(),
+                ];
+            }
 
-        return $data;
+            return $data;
+        } catch (\Exception $e) {
+            throw new TalkNotFound('TAlk not found and not showed');
+        }
     }
 
     /**
@@ -220,7 +224,7 @@ class TalkService
 
             $this->talkRepository->update($talk);
         } catch (Exception $e) {
-            throw new ErrorOnEditingTalk('Error in creating Talk');
+            throw new ErrorOnEditingTalk('Error in editing Talk');
         }
     }
 

@@ -7,6 +7,7 @@ use App\Repository\EventRepository;
 use App\Entity\Event;
 use App\Exceptions\EventNotFound;
 use App\Exceptions\ErrorOnCreatingEvent;
+use App\Exceptions\ErrorOnEditingEvent;
 
 /**
  * Class EventService
@@ -34,20 +35,24 @@ class EventService
      */
     public function listAll(): array
     {
-        $events = $this->eventRepository->findAll();
-        $data = [];
-        foreach ($events as $event) {
-            $data[] = [
-                "id" => $event->getId(),
-                "title" => $event->getTitle(),
-                "date_start" => $event->getDateStart()->format('Y-m-d H:i:s'),
-                "date_end" => $event->getDateEnd()->format('Y-m-d H:i:s'),
-                "description" => $event->getDescription(),
-                "date_created" => $event->getDateCreated()->format('Y-m-d H:i:s')
-            ];
-        }
+        try {
+            $events = $this->eventRepository->findAll();
+            $data = [];
+            foreach ($events as $event) {
+                $data[] = [
+                    "id" => $event->getId(),
+                    "title" => $event->getTitle(),
+                    "date_start" => $event->getDateStart()->format('Y-m-d'),
+                    "date_end" => $event->getDateEnd()->format('Y-m-d'),
+                    "description" => $event->getDescription(),
+                    "date_created" => $event->getDateCreated()->format('Y-m-d')
+                ];
+            }
 
-        return $data;
+            return $data;
+        } catch (\Exception $e) {
+            throw new EventNotFound('Event not found and not showed');
+        }
     }
 
     /**
@@ -107,10 +112,10 @@ class EventService
         $data[] = [
             "id" => $event->getId(),
             "title" => $event->getTitle(),
-            "date_start" => $event->getDateStart()->format('Y-m-d H:i:s'),
-            "date_end" => $event->getDateEnd()->format('Y-m-d H:i:s'),
+            "date_start" => $event->getDateStart()->format('Y-m-d'),
+            "date_end" => $event->getDateEnd()->format('Y-m-d'),
             "description" => $event->getDescription(),
-            "date_created" => $event->getDateCreated()->format('Y-m-d H:i:s')
+            "date_created" => $event->getDateCreated()->format('Y-m-d')
         ];
 
         return $data;
@@ -137,12 +142,17 @@ class EventService
             throw new EventNotFound('Event not found');
         }
 
-        (!empty($title)) ? $event->setTitle($title) : '';
-        (!empty($date_start)) ? $event->setDateStart($date_start) : '';
-        (!empty($date_end)) ? $event->setDateEnd($date_end) : '';
-        (!empty($description)) ? $event->setDescription($description) : '';
+        try {
+            (!empty($title)) ? $event->setTitle($title) : '';
+            (!empty($date_start)) ? $event->setDateStart($date_start) : '';
+            (!empty($date_end)) ? $event->setDateEnd($date_end) : '';
+            (!empty($description)) ? $event->setDescription($description) : '';
 
-        $this->eventRepository->update($event);
+            $this->eventRepository->update($event);
+
+        } catch (Exception $e) {
+            throw new ErrorOnEditingEvent('Error in editing event');
+        }
     }
 
     /**
