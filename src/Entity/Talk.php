@@ -78,6 +78,11 @@ class Talk
         return $this->date;
     }
 
+    public function getDateString(): string
+    {
+        return $this->date->format('Y-m-d H:i:s');
+    }
+
     public function setDate(\DateTime $date): void
     {
         $this->date = $date;

@@ -67,6 +67,11 @@ class Event
         return $this->date_start;
     }
 
+    public function getDateStartString(): string
+    {
+        return $this->date_start->format('Y-m-d H:i:s');
+    }
+
     public function setDateStart($date_start): void
     {
         $this->date_start = $date_start;
@@ -75,6 +80,11 @@ class Event
     public function getDateEnd(): ?\DateTime
     {
         return $this->date_end;
+    }
+
+    public function getDateEndString(): string
+    {
+        return $this->date_end->format('Y-m-d H:i:s');
     }
 
     public function setDateEnd($date_end): void

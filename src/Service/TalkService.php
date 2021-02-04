@@ -120,6 +120,13 @@ class TalkService
             throw new ErrorOnCreatingTalk('Event not found');
         }
 
+        if (
+            ($date->format('Y-m-d H:i:s') < $event->getDateStartString()) ||
+            ($date->format('Y-m-d H:i:s') > $event->getDateEndString()))
+        {
+            throw new ErrorOnCreatingTalk('Date outside the event period');
+        }
+
         $speaker = $this->speakerRepository->findOneBy(['id' => $speakerId]);
         if (!$speaker) {
             throw new ErrorOnCreatingTalk('Speaker not found');
@@ -208,10 +215,21 @@ class TalkService
             throw new ErrorOnEditingTalk('Event not found');
         }
 
+        if (
+            ($date->format('Y-m-d H:i:s') < $event->getDateStartString()) ||
+            ($date->format('Y-m-d H:i:s') > $event->getDateEndString()))
+        {
+            throw new ErrorOnEditingTalk('Date outside the event period');
+        }
+
+
         $speaker = $this->speakerRepository->findOneBy(['id' => $speakerId]);
         if (!$speaker) {
             throw new ErrorOnEditingTalk('Speaker not found');
         }
+
+        $hourStart->setTime($hourStart->format('H'), $hourStart->format('i'), '00');
+        $hourEnd->setTime($hourEnd->format('H'), $hourEnd->format('i'), '00');
 
         try {
             (!empty($title)) ? $talk->setTitle($title) : '';

@@ -22,7 +22,7 @@
 
                                 <div class="form-group">
                                     <label for="date_start">Date Talk</label>
-                                    <input type="text" class="form-control datepicker" id="date" name="date" value="{{ talk.date }}">
+                                    <input type="text" class="form-control datepicker" id="date" name="date" value="{{ talk.date|date("m/d/Y") }}">
                                 </div>
 
                                 <div class="form-group">

@@ -17,6 +17,7 @@
                             <table class="table">
                                 <tr>
                                     <th>Title</th>
+                                    <th>Date</th>
                                     <th>Hour Start</th>
                                     <th>Hour End</th>
                                     <th>Event</th>
@@ -27,6 +28,7 @@
                                 {% for value in talks %}
                                     <tr>
                                         <td>{{ value.title }}</td>
+                                        <td>{{ value.date|date("m/d/Y") }}</td>
                                         <td>{{ value.hour_start }}</td>
                                         <td>{{ value.hour_end }}</td>
                                         <td>{{ value.event }}</td>

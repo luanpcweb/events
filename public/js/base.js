@@ -2,10 +2,9 @@ $(function () {
 
     $('.datepicker').datepicker({
         clearBtn: true,
-        format: "mm/dd/yyyy"
     });
 
-    $('.time').mask('00:00:00');
+    $('.time').mask('00:00');
 
 });
 

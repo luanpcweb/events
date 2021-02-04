@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Exceptions\ErrorOnCreatingTalk;
+use App\Exceptions\ErrorOnEditingTalk;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -75,11 +77,12 @@ class TalkController extends AbstractController
         }
 
         try {
+
             $this->talkService->create(
                 $request->get('title'),
                 new \DateTime($request->get('date')),
-                new \DateTime($request->get('hourStart')),
-                new \DateTime($request->get('hourEnd')),
+                new \DateTime($request->get('hour_start')),
+                new \DateTime($request->get('hour_end')),
                 $request->get('description'),
                 $request->get('event_id'),
                 $request->get('speaker_id')
@@ -89,14 +92,17 @@ class TalkController extends AbstractController
                 'type' => 'alert-success',
                 'msg' => 'Created with success!'
             ]);
-        } catch (\Exception $e) {
-
-            return $this->render('boxMsg.html.twig', [
-                'type' => 'alert-danger',
-                'msg' => 'Failed Create!'
-            ]);
-
+        } catch (ErrorOnCreatingTalk $e) {
+            $msg = $e->getMessage();
         }
+        catch (\Exception $e) {
+            $msg = 'Failed Create!';
+        }
+
+        return $this->render('boxMsg.html.twig', [
+            'type' => 'alert-danger',
+            'msg' => $msg
+        ]);
 
     }
 
@@ -135,8 +141,8 @@ class TalkController extends AbstractController
                  $request->get('id'),
                  $request->get('title'),
                  new \DateTime($request->get('date')),
-                 new \DateTime($request->get('hourStart')),
-                 new \DateTime($request->get('hourEnd')),
+                 new \DateTime($request->get('hour_start')),
+                 new \DateTime($request->get('hour_end')),
                  $request->get('description'),
                  $request->get('event_id'),
                  $request->get('speaker_id')
@@ -147,14 +153,17 @@ class TalkController extends AbstractController
                 'msg' => 'Edited with success!'
             ]);
 
-        } catch (\Exception $e) {
-
-            return $this->render('boxMsg.html.twig', [
-                'type' => 'alert-danger',
-                'msg' => 'Failed Edit!'
-            ]);
-
+        } catch (ErrorOnEditingTalk $e) {
+            $msg = $e->getMessage();
         }
+        catch (\Exception $e) {
+            $msg = 'Failed Create!';
+        }
+
+        return $this->render('boxMsg.html.twig', [
+            'type' => 'alert-danger',
+            'msg' => $msg
+        ]);
 
     }
 
