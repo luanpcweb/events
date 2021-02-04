@@ -31,8 +31,12 @@ class EventController extends AbstractController
      */
     public function index(): Response
     {
-        $events = $this->eventService->listAll();
-        return $this->json($events);
+        try {
+            $events = $this->eventService->listAll();
+            return $this->json($events);
+        } catch (EventNotFound $e) {
+            return $this->json(['msg' => $e->getMessage()], 404);
+        }
     }
 
     /**
@@ -103,6 +107,8 @@ class EventController extends AbstractController
 
         } catch (EventNotFound $e) {
             return $this->json(['msg' => 'Event not found'], 404);
+        } catch (\Exception $e) {
+            return $this->json(['msg' => 'Failed delete'], 404);
         }
     }
 
