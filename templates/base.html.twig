@@ -1,0 +1,81 @@
+{# templates/base.html.twig #}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}Events{% endblock %}</title>
+
+    <link
+            rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    />
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css" />
+
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+    <style>
+        .datepicker td, .datepicker th {
+            width: 2.5rem;
+            height: 2.5rem;
+            font-size: 0.85rem;
+        }
+
+        .datepicker {
+            margin-bottom: 3rem;
+        }
+
+    </style>
+
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+<nav
+        class="navbar navbar-expand-lg navbar-light bg-light"
+        style="height: 70px;"
+>
+    <a class="navbar-brand" href="#">Events</a>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent"></div>
+    <ul class="nav navbar-nav navbar-right">
+        {% if app.user %}
+            <li><a class="nav-link" href="{{ path('events') }}">View Events</a></li>
+            <li><a class="nav-link" href="{{ path('talks') }}">View Talks</a></li>
+            <li><a class="nav-link" href="{{ path('app_logout') }}">Logout</a></li>
+        {% else %}
+            <li><a class="nav-link" href="{{ path('app_login') }}">Login</a></li>
+            <li>
+                <a class="nav-link" href="{{ path('registration') }}">Register</a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
+{% block body %}{% endblock %}
+
+
+<div id="modal_processing" tabindex="-1" role="dialog" aria-labelledby="modal_processing" aria-hidden="true"
+     class="modal fade text-left">
+    <div role="document" class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            </div>
+            <div class="modal-body">
+                <center><img src="{{ asset('/img/load.gif') }}"></center>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js"></script>
+<script src="{{ asset('/js/base.js') }}"></script>
+
+{% block javascripts %}{% endblock %}
+</body>
+</html>

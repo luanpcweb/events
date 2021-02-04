@@ -1,0 +1,48 @@
+{# templates/talks/index.html.twig #} {% extends 'base.html.twig' %} {% block
+    body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card bg-light mb-3 mt-3">
+                    <div class="card-body">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-md-10">List of Talks</div>
+                                <div class="col-md-2"><a type="button" href="{{ path('add_talk') }}" class="btn btn-primary">Add Talk</a></div>
+                            </div>
+                        </div>
+                        {% if app.user != null %}
+                            <div id="status"></div>
+
+                            <table class="table">
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Hour Start</th>
+                                    <th>Hour End</th>
+                                    <th>Event</th>
+                                    <th>Speaker</th>
+                                    <th>Description</th>
+                                    <th>#Options</th>
+                                </tr>
+                                {% for value in talks %}
+                                    <tr>
+                                        <td>{{ value.title }}</td>
+                                        <td>{{ value.hour_start }}</td>
+                                        <td>{{ value.hour_end }}</td>
+                                        <td>{{ value.event }}</td>
+                                        <td>{{ value.speaker }}</td>
+                                        <td>{{ value.description }}</td>
+                                        <td>
+                                            <a type="button" class="btn btn-info" href="{{ path('view_talk', { 'id' : value.id }) }}">View</a>
+                                            <button type="button" class="btn btn-danger btnActionDelete" route="/talk/delete/{{ value.id }}">Delete</button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

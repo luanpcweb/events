@@ -1,0 +1,45 @@
+{# templates/events/index.html.twig #} {% extends 'base.html.twig' %} {% block
+    body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card bg-light mb-3 mt-3">
+                    <div class="card-body">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-md-10">List of Events</div>
+                                <div class="col-md-2"><a type="button" href="{{ path('add_event') }}" class="btn btn-primary">Add Event</a></div>
+                            </div>
+                        </div>
+                        {% if app.user != null %}
+                            <div id="status"></div>
+                            <table class="table">
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Date Start</th>
+                                    <th>Date End</th>
+                                    <th>Description</th>
+                                    <th>Date Created</th>
+                                    <th>#Options</th>
+                                </tr>
+                                {% for value in events %}
+                                    <tr>
+                                        <td>{{ value.title }}</td>
+                                        <td>{{ value.date_start }}</td>
+                                        <td>{{ value.date_end }}</td>
+                                        <td>{{ value.description }}</td>
+                                        <td>{{ value.date_created }}</td>
+                                        <td>
+                                            <a type="button" class="btn btn-info" href="{{ path('view_event', { 'id' : value.id }) }}">View</a>
+                                            <button type="button" class="btn btn-danger btnActionDelete" route="/event/delete/{{ value.id }}">Delete</button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

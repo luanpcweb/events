@@ -1,0 +1,8 @@
+{# templates/redirect.html.twig #}
+<script>
+    $(document).ready(function() {
+        var redirect = "{{ redirect }}";
+        $(window.document.location).attr('href',redirect);
+
+    });
+</script>
