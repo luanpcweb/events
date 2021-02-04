@@ -24,14 +24,12 @@ class AppFixtures extends Fixture
 
         $faker = Factory::create();
 
-        $name = $faker->name();
-        $email = $faker->email();
-
-        $speaker = new Speaker();
-        $speaker->setId('0218d78e-6438-11eb-aa73-0242ac180002');
-        $speaker->setName($name);
-        $speaker->setCity('São Paulo');
-        $manager->persist($speaker);
+        for ($i=0; $i < 4; $i++) {
+            $speaker = new Speaker();
+            $speaker->setName($faker->name());
+            $speaker->setCity('São Paulo');
+            $manager->persist($speaker);
+        }
 
         $username = 'test';
         $email = 'test@me.com';
@@ -48,8 +46,9 @@ class AppFixtures extends Fixture
         $user->setEmail($email);
         $user->setPassword($this->encoder->encodePassword($user, $password));
         $user->setUsername($username);
-        $manager->persist($user);
+        $user->setRoles(['ROLE_USER']);
 
+        $manager->persist($user);
         $manager->flush();
     }
 }
